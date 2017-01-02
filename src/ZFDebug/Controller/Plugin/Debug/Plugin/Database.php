@@ -157,7 +157,6 @@ class Database extends Plugin implements PluginInterface
                                 $explainData['Extra'] = $explain['Extra'];
                             }
                             $explainData['Rows'] = $explain['rows'];
-                            $explainEnd = end($explainData);
                             foreach ($explainData as $key => $value) {
                                 $queries .= "$key: <span style='color:#ffb13e'>$value</span><br>\n";
                             }
