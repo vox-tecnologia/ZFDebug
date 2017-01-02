@@ -1,7 +1,8 @@
 {
   "name": "vox/debugbar",
-  "description": "DebugBar.",
+  "description": "ZFDebug is a plugin for the Zend Framework for PHP5, providing useful debug information displayed in a small bar at the bottom of every page.",
   "type": "library",
+  "license": "BSD-3-Clause",
   "autoload": {
     "psr-4": {
       "": "src/"
@@ -9,5 +10,18 @@
   },
   "require": {
     "zendframework/zendframework1": "1.12.*"
-  }
+  },
+  "authors": [
+    {
+      "name": "Joakim Nygård",
+      "homepage": "http://jokke.dk",
+      "role": "Developer"
+    },
+    {
+      "name": "Andreas Pankratz",
+      "homepage": "http://www.bangal.de",
+      "role": "Contributor"
+    }
+  ]
+
 }
