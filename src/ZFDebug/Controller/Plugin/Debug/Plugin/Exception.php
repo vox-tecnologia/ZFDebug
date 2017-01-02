@@ -36,7 +36,7 @@ class Exception
     public static function getLogger()
     {
         if (!self::$_logger) {
-            if ($zfdebug = Zend_Controller_Front::getInstance()->getPlugin('ZFDebug_Controller_Plugin_Debug')) {
+            if ($zfdebug = Zend_Controller_Front::getInstance()->getPlugin('Debug')) {
                 self::$_logger = $zfdebug->getPlugin('Log')->getLog();
             } else {
                 return false;

@@ -16,7 +16,7 @@ class Html extends Plugin implements PluginInterface
     protected $_identifier = 'html';
 
     /**
-     * Create ZFDebug_Controller_Plugin_Debug_Plugin_Html
+     * Create Html
      *
      * @param string $tab
      * @param string $panel

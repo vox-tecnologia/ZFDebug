@@ -44,7 +44,7 @@ class Auth implements PluginInterface
     protected $_acl;
 
     /**
-     * Create ZFDebug_Controller_Plugin_Debug_Plugin_Auth
+     * Create Auth
      *
      * @var string $user
      * @var string $role

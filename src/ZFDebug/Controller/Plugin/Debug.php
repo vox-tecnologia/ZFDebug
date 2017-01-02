@@ -280,7 +280,7 @@ class Debug extends Zend_Controller_Plugin_Abstract
             }
             // Register an instance
             if (is_object($plugin) && in_array(
-                    'ZFDebug_Controller_Plugin_Debug_Plugin_Interface', class_implements($plugin)
+                    PluginInterface::class, class_implements($plugin)
                 )
             ) {
                 $this->registerPlugin($plugin);
@@ -293,7 +293,7 @@ class Debug extends Zend_Controller_Plugin_Abstract
             // Register a classname
             if (in_array($plugin, Debug::$standardPlugins)) {
                 // standard plugin
-                $pluginClass = 'ZFDebug_Controller_Plugin_Debug_Plugin_' . $plugin;
+                $pluginClass = '\\ZFDebug\\Controller\\Plugin\\Debug\\Plugin\\' . $plugin;
             } else {
                 // we use a custom plugin
                 if (!preg_match('~^[\w]+$~D', $plugin)) {

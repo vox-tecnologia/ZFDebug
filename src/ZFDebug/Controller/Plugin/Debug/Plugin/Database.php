@@ -25,7 +25,7 @@ class Database extends Plugin implements PluginInterface
     protected $_explain = false;
 
     /**
-     * Create ZFDebug_Controller_Plugin_Debug_Plugin_Variables
+     * Create Variables
      *
      * @param Zend_Db_Adapter_Abstract|array $adapters
      *
