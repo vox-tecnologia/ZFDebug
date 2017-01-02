@@ -23,18 +23,16 @@ folder. Then add the following method to your bootstrap class (in ZF1.8+):
 
 	protected function _initZFDebug()
 	{
-	    $autoloader = Zend_Loader_Autoloader::getInstance();
-	    $autoloader->registerNamespace('ZFDebug');
-
-	    $options = array(
-	        'plugins' => array('Variables',
-	                           'Database' => array('adapter' => $db),
-	                           'File' => array('basePath' => '/path/to/project'),
-	                           'Cache' => array('backend' => $cache->getBackend()),
-	                           'Exception')
-	    );
-	    $debug = new ZFDebug_Controller_Plugin_Debug($options);
-
+        $options = [
+            'plugins' => [
+                'Variables',
+                'Database' => ['adapter' => Zend_Registry::getInstance()->get('db')],
+                'File' => ['basePath' => constant('PORTAL_PATH')],
+                'Cache' => ['backend' => $cache->getBackend()],
+                'Exception',
+            ],
+        ];
+        $debug = new \ZFDebug\Controller\Plugin\Debug($options);
 	    $this->bootstrap('frontController');
 	    $frontController = $this->getResource('frontController');
 	    $frontController->registerPlugin($debug);
@@ -48,11 +46,11 @@ To use ZFDebug with Composer, add the following to the require list in your
 project's composer.json file:
 
 	"require": {
-	    "jokkedk/zfdebug": "1.6.2"
+	    "vox-tecnologia/zfdebug": "~1.6"
 	},
 
 Run the install command to resolve and download the dependencies:
 
-	php composer.phar install
+	composer install
 
 Further documentation will follow as the github move progresses.
