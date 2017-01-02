@@ -1,0 +1,10 @@
+{
+  "name": "vox/debugbar",
+  "description": "DebugBar.",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  }
+}
