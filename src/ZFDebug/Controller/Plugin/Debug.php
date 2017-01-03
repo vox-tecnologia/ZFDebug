@@ -196,17 +196,21 @@ class Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopShutdown()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return;
-        }
         $contentType = $this->getRequest()->getHeader('Content-Type');
-        if (false !== $contentType && false === strpos($contentType, 'html')) {
-            return;
-        }
         $disable = Zend_Controller_Front::getInstance()->getRequest()->getParam('ZFDEBUG_DISABLE');
-        if (isset($disable)) {
+
+        if (
+            $this->getRequest()->isXmlHttpRequest() ||
+            (!empty($disable) && true == $disable) ||
+            (
+                false !== $contentType
+                && false === strpos($contentType, 'html')
+                && false === strpos($contentType, 'x-www-form')
+            )
+        ) {
             return;
         }
+
         $html = '';
         $html .= "<div id='ZFDebug_info'>\n";
         $html .= "\t<span class='ZFDebug_span' style='padding-right:0px;' onclick='ZFDebugPanel(ZFDebugCurrent);'>
@@ -220,13 +224,8 @@ class Debug extends Zend_Controller_Plugin_Abstract
             if ($tab == '') {
                 continue;
             }
-            if (null !== $this->_options['image_path'] &&
-                file_exists($this->_options['image_path'] . '/' . $plugin->getIdentifier() . '.png')
-            ) {
-                $pluginIcon = $this->_options['image_path'] . '/' . $plugin->getIdentifier() . '.png';
-            } else {
-                $pluginIcon = $plugin->getIconData();
-            }
+
+            $pluginIcon = $plugin->getIconData();
             /* @var $plugin PluginInterface */
             $showPanel = ($plugin->getPanel() == '')
                 ? 'log'
@@ -399,6 +398,7 @@ class Debug extends Zend_Controller_Plugin_Abstract
         } else {
             $boxheight = '32';
         }
+
         return ('
     <style type="text/css" media="screen">
         #ZFDebug, #ZFDebug>div, #ZFDebug>span, #ZFDebug>h1, #ZFDebug>h2, #ZFDebug>h3, #ZFDebug>h4, #ZFDebug>h5, #ZFDebug>h6, #ZFDebug>p, #ZFDebug>blockquote, #ZFDebug>pre, #ZFDebug>a, #ZFDebug>code, #ZFDebug>em, #ZFDebug>img, #ZFDebug>strong, #ZFDebug>dl, #ZFDebug>dt, #ZFDebug>dd, #ZFDebug>ol, #ZFDebug>ul, #ZFDebug>li, #ZFDebug>table, #ZFDebug>tbody, #ZFDebug>tfoot, #ZFDebug>thead, #ZFDebug>tr, #ZFDebug>th, #ZFDebug>td {
