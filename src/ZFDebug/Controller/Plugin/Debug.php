@@ -399,11 +399,9 @@ class Debug extends Zend_Controller_Plugin_Abstract
         } else {
             $boxheight = '32';
         }
-
         return ('
     <style type="text/css" media="screen">
-        html,body {height:100%}
-        #ZFDebug, #ZFDebug div, #ZFDebug span, #ZFDebug h1, #ZFDebug h2, #ZFDebug h3, #ZFDebug h4, #ZFDebug h5, #ZFDebug h6, #ZFDebug p, #ZFDebug blockquote, #ZFDebug pre, #ZFDebug a, #ZFDebug code, #ZFDebug em, #ZFDebug img, #ZFDebug strong, #ZFDebug dl, #ZFDebug dt, #ZFDebug dd, #ZFDebug ol, #ZFDebug ul, #ZFDebug li, #ZFDebug table, #ZFDebug tbody, #ZFDebug tfoot, #ZFDebug thead, #ZFDebug tr, #ZFDebug th, #ZFDebug td {
+        #ZFDebug, #ZFDebug>div, #ZFDebug>span, #ZFDebug>h1, #ZFDebug>h2, #ZFDebug>h3, #ZFDebug>h4, #ZFDebug>h5, #ZFDebug>h6, #ZFDebug>p, #ZFDebug>blockquote, #ZFDebug>pre, #ZFDebug>a, #ZFDebug>code, #ZFDebug>em, #ZFDebug>img, #ZFDebug>strong, #ZFDebug>dl, #ZFDebug>dt, #ZFDebug>dd, #ZFDebug>ol, #ZFDebug>ul, #ZFDebug>li, #ZFDebug>table, #ZFDebug>tbody, #ZFDebug>tfoot, #ZFDebug>thead, #ZFDebug>tr, #ZFDebug>th, #ZFDebug>td {
         	margin: 0;
         	padding: 0;
         	border: 0;
@@ -413,10 +411,12 @@ class Debug extends Zend_Controller_Plugin_Abstract
         	background: transparent;
         	}
 
-        #ZFDebug_offset {height:' . $boxheight . 'px}
+        footer:last-of-type:after{ content: " | "; color: transparent; };
+        #ZFDebug_offset {height:' . $boxheight . 'px; background:red; float:left; width:100%; }
         #ZFDebug {height:' . $boxheight . 'px; width:100%; background:#262626;
                         font: 12px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif;
-                        position:fixed; bottom:0px; left:0px; color:#FFF; background:#000000;
+                        margin-top: 10px!important; overflow: hidden;
+                        position:fixed; bottom:0px; left:0px; color:#FFF; background:#000;
                         z-index:2718281828459045;}
         #ZFDebug p {margin:1em 0}
         #ZFDebug a {color:#FFFFFF}
@@ -526,7 +526,7 @@ class Debug extends Zend_Controller_Plugin_Abstract
      */
     protected function _output($html)
     {
-        $html = "<div id='ZFDebug_offset'></div>\n<div id='ZFDebug'>\n$html\n</div>\n</body>";
+        $html = "<div id='ZFDebug_offset'></div><div id='ZFDebug'>\n$html\n</div>\n</body>";
         $response = $this->getResponse();
         // $response->setBody(preg_replace('/(<\/head>)/i', $this->_headerOutput() . '$1', $response->getBody()));
         $response->setBody(str_ireplace('</body>', $this->_headerOutput() . $html, $response->getBody()));
