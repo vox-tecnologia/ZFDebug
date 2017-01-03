@@ -411,8 +411,8 @@ class Debug extends Zend_Controller_Plugin_Abstract
         	background: transparent;
         	}
 
-        footer:last-of-type:after{ content: " | "; color: transparent; };
-        #ZFDebug_offset {height:' . $boxheight . 'px; background:red; float:left; width:100%; }
+        footer:last-of-type:after{ content: " _ "; color: transparent; font-size: 0.4em; };
+        #ZFDebug_offset {height:' . $boxheight . 'px; }
         #ZFDebug {height:' . $boxheight . 'px; width:100%; background:#262626;
                         font: 12px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif;
                         margin-top: 10px!important; overflow: hidden;
