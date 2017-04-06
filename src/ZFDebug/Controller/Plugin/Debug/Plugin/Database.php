@@ -24,6 +24,11 @@ class Database extends Plugin implements PluginInterface
 
     protected $_explain = false;
 
+    protected $executedQueries = [];
+
+    private $profiler;
+
+
     /**
      * Create Variables
      *
@@ -113,11 +118,15 @@ class Database extends Plugin implements PluginInterface
         }
         $html .= '</h4>';
 
-        return $html . $this->getProfile();
+        return $html . $this->repeatedQueries() . $this->getProfile();
     }
 
     public function getProfile()
     {
+        if (!empty($this->profiler)) {
+            return $this->profiler;
+        }
+
         $queries = '';
         foreach ($this->_db as $name => $adapter) {
             if ($profiles = $adapter->getProfiler()->getQueryProfiles()) {
@@ -134,12 +143,14 @@ class Database extends Plugin implements PluginInterface
                     array_walk($params, [$this, '_addQuotes']);
                     $paramCount = count($params);
                     if ($paramCount) {
-                        $queries .= htmlspecialchars(
+                        $queries .= $executedQuery = htmlspecialchars(
                             preg_replace(array_fill(0, $paramCount, '/\?/'), $params, $profile->getQuery(), 1)
                         );
                     } else {
-                        $queries .= htmlspecialchars($profile->getQuery());
+                        $queries .= $executedQuery = htmlspecialchars($profile->getQuery());
                     }
+                    $this->executedQueries[$executedQuery][] = $executedQuery;
+
                     $supportedAdapter = ($adapter instanceof Zend_Db_Adapter_Mysqli ||
                         $adapter instanceof Zend_Db_Adapter_Pdo_Mysql);
                     # Run explain if enabled, supported adapter and SELECT query
@@ -168,8 +179,33 @@ class Database extends Plugin implements PluginInterface
                 $queries .= "</table>\n";
             }
         }
+        return $this->profiler = $queries;
+    }
 
-        return $queries;
+    private function repeatedQueries()
+    {
+        if (!empty($this->executedQueries)) {
+            $this->executedQueries = array_filter(
+                $this->executedQueries,
+                function ($value) {
+                    if (count($value) > 1) {
+                        return true;
+                    }
+                }
+            );
+
+            if (!empty($this->executedQueries)) {
+                $queries = '<h4>Repeated Queries</h4>';
+                $queries .= '<table cellspacing="0" cellpadding="0" width="100%">';
+                foreach ($this->executedQueries as $query => $regs) {
+                    $counter = count($regs);
+                    $queries .= "<tr><td  style='text-align:right;padding-right:2em;'  nowrap>{$counter}</td><td>{$query}</td></tr>";
+                }
+
+                $queries .= "</table>\n";
+                return $queries;
+            }
+        }
     }
 
     // For adding quotes to query params
